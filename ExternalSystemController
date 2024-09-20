@@ -1,0 +1,34 @@
+public with sharing class ExternalSystemController {
+    
+    @AuraEnabled(cacheable=false)
+    public static Map<String, Object> getDataFromExternalSystem(String id) {
+
+
+        // Make HTTP Callout to external system here
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('callout:SF_Academy_Target/services/apexrest/Airlines/'+id); //+id, a04Qy000000FgOjIAK
+        request.setMethod('GET');
+        
+        //Prepare Internet
+        Http http = new Http();
+
+        //Send the request over the internet in order to recieve response
+        HttpResponse response = http.send(request);
+        
+        //Process the responce
+        System.debug(response.getStatusCode());
+        System.debug(response.getStatus());
+        System.debug(response.getBody());
+
+        if (response.getStatusCode() == 200) {
+            // Converting JSON format to Apex Map collection to process the data
+            Map<String, Object> results = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
+            return results;
+        } else {
+            String errorMessage = 'Error fetching data from external system. Status code: ' + response.getStatusCode();
+            throw new AuraHandledException(errorMessage);
+        }
+
+        
+    }
+}
