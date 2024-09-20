@@ -1,0 +1,17 @@
+@RestResource(urlMapping='/Airlines/*')
+global with sharing class ExternalSystemDataService {
+    @HttpGet
+    global static Airlines__c getDataById() {
+        // Get the ID from the request URL
+        Id recordId = RestContext.request.requestURI.substringAfterLast('/');
+        
+        // Perform a query to fetch the related data from the target org
+        Airlines__c result = [
+            SELECT Id, Airlines_Id__c, Country__c, Name
+            FROM Airlines__c
+            WHERE Id = :recordId
+            LIMIT 1
+        ];
+        return result;
+    }
+}
