@@ -1,0 +1,20 @@
+// Mock class for simulating both success and failure responses
+public class MockHttpResponseGenerator implements HttpCalloutMock {
+    public HTTPResponse respond(HTTPRequest req) {
+        HTTPResponse res = new HTTPResponse();
+        
+        // If the request URL contains the valid ID, return a 200 response
+        if (req.getEndpoint().contains('a04Qy000000FgOjIAK')) {
+            res.setStatusCode(200);
+            res.setBody('{"attributes": {"type": "Airlines__c","url": "/services/data/v61.0/sobjects/Airlines__c/a04Qy000000FgOjIAK"},' + 
+                        '"Id": "a04Qy000000FgOjIAK", "Airlines_Id__c": "55", "Country__c": "Turkmenistan", "Name": "Turkmenistan Airlines"}');
+        } 
+        // Otherwise, return a 404 error response for an invalid ID
+        else {
+            res.setStatusCode(404);
+            res.setBody('{"error": "Resource not found"}');
+        }
+
+        return res;
+    }
+}
