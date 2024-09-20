@@ -1,0 +1,39 @@
+<template>
+      <lightning-card title="Search Airlines Data" icon-name="utility:search">
+            <div class="slds-m-around_medium">
+                  <!-- Input for entering Airline ID -->
+                  <lightning-input 
+                        label="Enter Airline ID" 
+                        value={searchId}
+                        onchange={handleInputChange}
+                        placeholder="Enter the ID to search">
+                  </lightning-input>
+            </div>
+            <div class="slds-m-around_medium">
+                  <!-- Search Button -->
+                  <lightning-button 
+                        label="Search" 
+                        onclick={handleSearch}
+                        class="slds-m-top_small">
+                  </lightning-button>
+            </div>
+            <div class="slds-m-around_medium">
+                  <!-- Datatable to display the search results -->
+                  <template if:true={externalData.length}>
+                              <lightning-datatable
+                                    key-field="Id"
+                                    data={externalData}
+                                    columns={columns}
+                                    hide-checkbox-column="true"
+                                    class="slds-m-top_medium">
+                              </lightning-datatable>
+                  </template>
+            </div>         
+            <div class="slds-m-around_medium"> 
+                  <!-- Message to show if no data is found -->
+                  <template if:false={externalData.length}>
+                        <p class="slds-text-title">No data available. Please search for valid Airline ID.</p>
+                  </template>
+            </div>  
+      </lightning-card>
+  </template>
